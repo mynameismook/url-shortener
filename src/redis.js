@@ -9,8 +9,15 @@ const DEFAULT_TTL = 604800; // 7 days
 const CODES_SET = '__codes__';
 
 const redis = {
+
   async set(code, url, ttlSeconds = DEFAULT_TTL) {
-    const entry = JSON.stringify({ url, createdAt: new Date().toISOString(), enabled: true });
+    const entry = JSON.stringify({
+      url,
+      createdAt: new Date().toISOString(),
+      enabled: true,
+      clicks: 0
+    });
+
     await client.set(code, entry, 'EX', ttlSeconds);
     await client.sadd(CODES_SET, code);
     return true;
@@ -19,22 +26,39 @@ const redis = {
   async get(code) {
     const raw = await client.get(code);
     if (!raw) return null;
+
     try {
       const parsed = JSON.parse(raw);
+
       if (parsed.enabled === false) return null;
+
       return parsed.url;
-    } catch { return raw; }
+    } catch {
+      return raw;
+    }
   },
 
   async toggle(code) {
     const raw = await client.get(code);
     if (!raw) return null;
+
     let parsed;
-    try { parsed = JSON.parse(raw); } catch { return null; }
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      return null;
+    }
+
     parsed.enabled = parsed.enabled === false ? true : false;
+
     const ttl = await client.ttl(code);
-    if (ttl > 0) { await client.set(code, JSON.stringify(parsed), 'EX', ttl); }
-    else { await client.set(code, JSON.stringify(parsed)); }
+
+    if (ttl > 0) {
+      await client.set(code, JSON.stringify(parsed), 'EX', ttl);
+    } else {
+      await client.set(code, JSON.stringify(parsed));
+    }
+
     return parsed.enabled;
   },
 
@@ -42,19 +66,36 @@ const redis = {
     const codes = await client.smembers(CODES_SET);
     if (!codes.length) return [];
 
-    const entries = await Promise.all(codes.map(async (code) => {
-      const raw = await client.get(code);
-      if (!raw) {
-        await client.srem(CODES_SET, code); // clean up expired
-        return null;
-      }
-      try {
-        const { url, createdAt, enabled } = JSON.parse(raw);
-        return { code, url, createdAt, enabled: enabled !== false };
-      } catch {
-        return { code, url: raw, createdAt: null };
-      }
-    }));
+    const entries = await Promise.all(
+      codes.map(async (code) => {
+        const raw = await client.get(code);
+
+        if (!raw) {
+          await client.srem(CODES_SET, code);
+          return null;
+        }
+
+        try {
+          const parsed = JSON.parse(raw);
+
+          return {
+            code,
+            url: parsed.url,
+            createdAt: parsed.createdAt,
+            enabled: parsed.enabled !== false,
+            clicks: parsed.clicks || 0
+          };
+        } catch {
+          return {
+            code,
+            url: raw,
+            createdAt: null,
+            enabled: true,
+            clicks: 0
+          };
+        }
+      })
+    );
 
     return entries
       .filter(Boolean)
@@ -66,6 +107,28 @@ const redis = {
     await client.srem(CODES_SET, code);
     return result;
   },
+
+  async incrementClick(code) {
+    const raw = await client.get(code);
+    if (!raw) return;
+
+    const parsed = JSON.parse(raw);
+
+    if (!parsed.clicks) {
+      parsed.clicks = 1;
+    } else {
+      parsed.clicks += 1;
+    }
+
+    const ttl = await client.ttl(code);
+
+    if (ttl > 0) {
+      await client.set(code, JSON.stringify(parsed), 'EX', ttl);
+    } else {
+      await client.set(code, JSON.stringify(parsed));
+    }
+  }
+
 };
 
 module.exports = redis;
