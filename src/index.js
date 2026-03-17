@@ -45,9 +45,13 @@ api.post('/shorten', async (req, res) => {
     return res.status(400).json({ error: 'Invalid URL' });
   }
 
+<<<<<<< HEAD
   // Support custom code or generate random
   const code = (customCode || randomCode(6)).toLowerCase();
 
+=======
+  const code = randomCode(6);
+>>>>>>> origin/feat/toggle
   await redis.set(code, url);
 
   return res.status(200).json({ code, short: `/${code}` });
@@ -56,6 +60,12 @@ api.post('/shorten', async (req, res) => {
 api.get('/urls', async (req, res) => {
   const entries = await redis.list();
   return res.status(200).json(entries);
+});
+
+api.patch('/:code/toggle', async (req, res) => {
+  const enabled = await redis.toggle(req.params.code);
+  if (enabled === null) return res.status(404).json({ error: 'Not found' });
+  return res.status(200).json({ code: req.params.code, enabled });
 });
 
 api.delete('/:code', async (req, res) => {
@@ -88,6 +98,7 @@ app.get('/:code', async (req, res) => {
     return res.status(404).json({ error: 'Not found' });
   }
 
+  redis.incrementClick(req.params.code);
   return res.redirect(302, url);
 });
 
