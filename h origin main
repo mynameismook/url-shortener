@@ -1,0 +1,62 @@
+* [33m4a2f1ca[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mfeat/toggle[m[33m, [m[1;32mfeat/customcode[m[33m, [m[1;32mfeat/counter[m[33m)[m resolve merge conflict feat/toggle
+*   [33m4c8af01[m merge feat/toggle
+[32m|[m[33m\[m  
+[32m|[m * [33m0af6111[m[33m ([m[1;31morigin/feat/toggle[m[33m)[m update variable name
+[32m|[m * [33m0cb82a9[m update test
+[32m|[m *   [33m45f0f2f[m Merge branch 'main' into feat/toggle
+[32m|[m [34m|[m[35m\[m  
+[32m|[m * [35m|[m [33m04fff38[m feat: add toggle enable/disable for short URLs
+* [35m|[m [35m|[m   [33m4dca1b0[m merge feat/customcode
+[36m|[m[1;31m\[m [35m\[m [35m\[m  
+[36m|[m * [35m|[m [35m|[m [33mc2abef7[m[33m ([m[1;31morigin/feat/customcode[m[33m)[m update variable name
+[36m|[m * [35m|[m [35m|[m [33mef1f55e[m update test
+[36m|[m * [35m|[m [35m|[m   [33m55ccad5[m Merge branch 'main' into feat/customcode
+[36m|[m [1;32m|[m[35m\[m [35m\[m [35m\[m  
+[36m|[m [1;32m|[m [35m|[m [35m|[m[35m/[m  
+[36m|[m [1;32m|[m [35m|[m[35m/[m[35m|[m   
+[36m|[m * [35m|[m [35m|[m [33me42bf9b[m feat: add custom code support for URL shortening
+[36m|[m [35m|[m [35m|[m[35m/[m  
+[36m|[m [35m|[m[35m/[m[35m|[m   
+* [35m|[m [35m|[m [33m0a1d744[m resolve merge conflict feat/counter
+* [35m|[m [35m|[m [33m6db1d79[m update
+* [35m|[m [35m|[m [33m53721dd[m update variable name
+* [35m|[m [35m|[m [33m6f9193d[m refactor: ensure generated code is always lowercase
+* [35m|[m [35m|[m [33m4c6b749[m update test
+* [35m|[m [35m|[m [33m01dc960[m test: rewrite counter.test.js to mock ioredis and test actual redis functions
+* [35m|[m [35m|[m [33maae703f[m test: rewrite toggle.test.js to mock ioredis and test actual redis functions
+[35m|[m [35m|[m[35m/[m  
+[35m|[m[35m/[m[35m|[m   
+[35m|[m [35m|[m * [33m2ce488d[m[33m ([m[1;31morigin/feat/counter[m[33m)[m update variable name
+[35m|[m [35m|[m * [33md32fdff[m update test
+[35m|[m [35m|[m *   [33mfbc6712[m Merge branch 'main' into feat/counter
+[35m|[m [35m|[m [1;35m|[m[35m\[m  
+[35m|[m [35m|[m[35m_[m[1;35m|[m[35m/[m  
+[35m|[m[35m/[m[35m|[m [1;35m|[m   
+* [35m|[m [1;35m|[m [33m2cfad10[m test: remove duplicate 404 test from toggle.test.js
+[35m|[m[35m/[m [1;35m/[m  
+[35m|[m * [33mf7a5c21[m feat: add click counter for short URLs
+[35m|[m[35m/[m  
+* [33mc6fb570[m use small leter in random code
+* [33m5555ab2[m update test removing www test
+* [33m7917fb6[m remove base api url
+* [33m498a367[m update package.json
+* [33m140c383[m complete version
+* [33m164216e[m ui: remove stats cards, simplify UI
+* [33mf698c54[m ui: remove Active in Redis stat card
+*   [33m1e83f8b[m Merge branch 'feat/custom-code'
+[31m|[m[32m\[m  
+[31m|[m *   [33m0764b2e[m merge: bring /ui and www from main
+[31m|[m [33m|[m[34m\[m  
+[31m|[m * [34m|[m [33m32de812[m feat: support custom code with lowercase normalization
+* [34m|[m [34m|[m [33m7182662[m feat: change redirect path from /r/:code to /:code
+* [34m|[m [34m|[m [33maddf4b2[m feat: fetch URLs from Redis via API, remove localStorage
+* [34m|[m [34m|[m [33mdd090f7[m feat: add DELETE /r/:code endpoint and wire up UI delete button
+* [34m|[m [34m|[m [33m55372a6[m ui: remove delete warning message
+[34m|[m [34m|[m[34m/[m  
+[34m|[m[34m/[m[34m|[m   
+* [34m|[m [33m1adc5c1[m feat: use alphanumeric-only alphabet for generated codes
+* [34m|[m [33mbcaa86a[m ui: light theme, flat SVG icons, remove Code column
+* [34m|[m [33m71b0c0a[m feat: serve static UI at /ui path
+* [34m|[m [33mff425b0[m feat: add static web UI for URL management
+[34m|[m[34m/[m  
+* [33mb0a080c[m initial commit: url shortener minimal version
